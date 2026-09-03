@@ -254,6 +254,54 @@ export const allOffers: Offer[] = [
 ];
 
 /* -------------------------------------------------------------------------- */
+/* Free entry point: the Systems Snapshot                                      */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The no-cost step ahead of the paid Growth Systems Map. Nobody should be asked
+ * for $1,500 on a first visit, so this offers fifteen minutes and three
+ * specific findings first, then names the Map as the next step for the
+ * prospects it qualifies.
+ *
+ * Surfaced by the popup in src/components/sections/systems-snapshot-popup.tsx.
+ */
+export const systemsSnapshot = {
+  id: "systems-snapshot",
+  eyebrow: "Free · 15 minutes",
+  name: "Systems Snapshot",
+  headline: "Fifteen minutes. Three specific findings.",
+  description:
+    "A short working call, not a sales presentation. We look at how leads and work actually move through your business, then tell you what is worth fixing first.",
+  /** What the prospect leaves with. Deliberately concrete and bounded. */
+  deliverables: [
+    "One website conversion problem",
+    "One local-search opportunity",
+    "One process worth automating",
+    "A rough estimate of what each is costing you",
+  ],
+  /** Names the paid next step without making it a condition. */
+  note: `If the Snapshot points to something bigger, the ${entryOffer.price} ${entryOffer.name} is the next step. Nothing here obligates you to take it.`,
+  formHeading: "Request your Snapshot",
+  formIntro:
+    "Two minutes to request. We reply within one business day with a couple of times.",
+  ctaLabel: "Book My Free Snapshot",
+  privacyNote: "We reply from a Cedar Forge address. No newsletter, no list.",
+} as const;
+
+/**
+ * Optional routing question on the Snapshot form. Kept optional on purpose: the
+ * free offer should ask for as little as possible.
+ */
+export const snapshotFocusOptions = [
+  { value: "website-conversion", label: "The website is not converting" },
+  { value: "local-search", label: "We do not show up in local search" },
+  { value: "manual-work", label: "Too much manual work" },
+  { value: "lead-follow-up", label: "Leads slip through follow-up" },
+  { value: "disconnected-tools", label: "Our tools do not talk to each other" },
+  { value: "not-sure", label: "Not sure yet" },
+] as const;
+
+/* -------------------------------------------------------------------------- */
 /* Systems Care                                                                */
 /* -------------------------------------------------------------------------- */
 

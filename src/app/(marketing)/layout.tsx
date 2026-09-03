@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { HubSpotTracking } from "@/components/analytics/hubspot";
 import { Footer } from "@/components/layout/footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { SystemsSnapshotPopup } from "@/components/sections/systems-snapshot-popup";
 import { buildStructuredData } from "@/lib/structured-data";
 
 /**
@@ -30,6 +31,13 @@ export default function MarketingLayout({
       <SiteHeader />
       {children}
       <Footer />
+
+      {/*
+       * Free entry point. Lives in the layout rather than the page so it is
+       * available across every marketing route, and portals itself out of this
+       * tree at render time.
+       */}
+      <SystemsSnapshotPopup />
 
       <script
         type="application/ld+json"
