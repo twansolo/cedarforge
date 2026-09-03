@@ -1,5 +1,5 @@
 import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
+import { SiteHeader } from "@/components/layout/site-header";
 import { ButtonLink } from "@/components/ui/button";
 import { TechnicalLabel } from "@/components/ui/technical-label";
 
@@ -10,7 +10,7 @@ import { TechnicalLabel } from "@/components/ui/technical-label";
 export default function NotFound() {
   return (
     <>
-      <Header />
+      <SiteHeader />
 
       <main className="relative flex min-h-[70vh] items-center overflow-hidden bg-forge-black">
         <div

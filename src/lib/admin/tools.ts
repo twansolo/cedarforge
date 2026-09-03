@@ -27,6 +27,14 @@ export type AdminTool = {
 
 export const adminTools: AdminTool[] = [
   {
+    slug: "leads",
+    name: "Leads",
+    description:
+      "Recent HubSpot contacts, segmented against the three target markets. Read-only.",
+    category: "Pipeline",
+    status: "live",
+  },
+  {
     slug: "systems-check",
     name: "Systems Check",
     description:

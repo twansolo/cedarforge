@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import { HubSpotTracking } from "@/components/analytics/hubspot";
 import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
+import { SiteHeader } from "@/components/layout/site-header";
 import { buildStructuredData } from "@/lib/structured-data";
 
 /**
@@ -27,7 +27,7 @@ export default function MarketingLayout({
         Skip to content
       </a>
 
-      <Header />
+      <SiteHeader />
       {children}
       <Footer />
 

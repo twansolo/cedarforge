@@ -3,12 +3,18 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
-import { Logo } from "@/components/layout/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { useActiveSection } from "@/hooks/use-active-section";
-import { navigation, primaryCta } from "@/lib/site";
+import { navigation, primaryCta, siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,7 +26,13 @@ const sectionIds: readonly string[] = navigation.flatMap((item) =>
   "activeId" in item ? [item.activeId] : [],
 );
 
-export function Header() {
+/**
+ * The brand lockup arrives as a prop rather than being imported here.
+ * `BrandLockup` inlines an SVG it reads from disk, which makes it an async
+ * server component, and this header is a client component for the scroll and
+ * menu state. Passing the rendered node in from the layout keeps both.
+ */
+export function Header({ lockup }: { lockup: ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const activeId = useActiveSection(sectionIds);
@@ -89,12 +101,16 @@ export function Header() {
       )}
     >
       <div className="mx-auto flex h-[72px] max-w-[1400px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
+        {/*
+         * No vertical padding: the lockup is 56px tall on its own, which clears
+         * the 44px minimum target and keeps the link inside the 72px bar.
+         */}
         <Link
           href="/"
-          aria-label={`${"Cedar Forge.AI"} home`}
-          className="shrink-0 py-2"
+          aria-label={`${siteConfig.name} home`}
+          className="flex shrink-0 items-center"
         >
-          <Logo showTagline />
+          {lockup}
         </Link>
 
         {/* Desktop navigation */}

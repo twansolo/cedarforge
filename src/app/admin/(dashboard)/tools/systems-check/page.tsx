@@ -50,6 +50,19 @@ function collectChecks(): Check[] {
       configured: has("CONTACT_WEBHOOK_URL"),
       required: false,
     },
+    {
+      name: "HubSpot lead capture",
+      detail: "HUBSPOT_FORM_GUID — writes each contact submission into the CRM.",
+      configured: has("HUBSPOT_FORM_GUID"),
+      required: false,
+    },
+    {
+      name: "HubSpot CRM read",
+      detail:
+        "HUBSPOT_PRIVATE_APP_TOKEN — private app token the Leads tool reads contacts with.",
+      configured: has("HUBSPOT_PRIVATE_APP_TOKEN"),
+      required: false,
+    },
   ];
 }
 
