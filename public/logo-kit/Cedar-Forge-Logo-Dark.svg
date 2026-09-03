@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" role="img" aria-label="Cedar Forge.AI logo on dark background">
+  <rect width="1280" height="320" fill="#0B0E0C"/>
+  <g transform="translate(54 52) scale(.84)">
+    <path d="M226 20H88C50.4 20 20 50.4 20 88v80c0 37.6 30.4 68 68 68h138v-46H93c-15 0-27-12-27-27V93c0-15 12-27 27-27h133z" fill="#F4F5F1"/>
+    <path d="M104 86h36v134h-36zM104 86h122v38H104zM104 140h98v38h-98z" fill="#168447"/>
+    <g fill="#0B0E0C" opacity=".65"><rect x="120" y="98" width="51" height="4" rx="2"/><rect x="120" y="108" width="36" height="4" rx="2"/><rect x="120" y="152" width="40" height="4" rx="2"/><rect x="120" y="162" width="28" height="4" rx="2"/></g>
+    <g fill="#7CFFAC"><circle cx="213" cy="99" r="4"/><circle cx="213" cy="111" r="4"/><circle cx="189" cy="153" r="4"/><circle cx="189" cy="165" r="4"/></g>
+  </g>
+  <text x="320" y="153" fill="#F4F5F1" font-family="Manrope,Arial,sans-serif" font-size="84" font-weight="750" letter-spacing="7">CEDAR FORGE<tspan fill="#2BBF69">.AI</tspan></text>
+  <rect x="325" y="193" width="72" height="4" fill="#2BBF69"/>
+  <text x="420" y="204" fill="#F4F5F1" font-family="'DM Mono',monospace" font-size="19" letter-spacing="7">INTELLIGENT GROWTH SYSTEMS</text>
+</svg>

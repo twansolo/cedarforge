@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Cedar Forge social sharing card">
+  <defs><pattern id="grain" width="180" height="90" patternUnits="userSpaceOnUse"><path d="M-20 30C25 0 62 65 112 30s86 16 120-10M-20 58c45-30 82 35 132 0s86 16 120-10" fill="none" stroke="#A6653A" stroke-width="2" opacity=".28"/></pattern></defs>
+  <rect width="1200" height="630" fill="#0B0E0C"/><rect x="0" y="0" width="250" height="630" fill="url(#grain)"/><rect x="250" y="0" width="8" height="630" fill="#168447"/>
+  <g transform="translate(54 160) scale(.82)"><path d="M226 20H88C50.4 20 20 50.4 20 88v80c0 37.6 30.4 68 68 68h138v-46H93c-15 0-27-12-27-27V93c0-15 12-27 27-27h133z" fill="#F4F5F1"/><path d="M104 86h36v134h-36zM104 86h122v38H104zM104 140h98v38h-98z" fill="#168447"/><g fill="#7CFFAC"><circle cx="213" cy="99" r="4"/><circle cx="213" cy="111" r="4"/><circle cx="189" cy="153" r="4"/><circle cx="189" cy="165" r="4"/></g></g>
+  <text x="330" y="275" fill="#F4F5F1" font-family="Manrope,Arial,sans-serif" font-size="82" font-weight="750" letter-spacing="5">CEDAR FORGE<tspan fill="#2BBF69">.AI</tspan></text>
+  <text x="335" y="346" fill="#F4F5F1" font-family="'DM Mono',monospace" font-size="21" letter-spacing="6">INTELLIGENT GROWTH SYSTEMS</text>
+  <line x1="335" y1="414" x2="1080" y2="414" stroke="#168447" stroke-width="3"/>
+  <text x="335" y="472" fill="#A7AFA9" font-family="Manrope,Arial,sans-serif" font-size="25">AI automation · web systems · local growth</text>
+  <text x="335" y="530" fill="#2BBF69" font-family="'DM Mono',monospace" font-size="17" letter-spacing="3">CEDAR RAPIDS, IOWA</text>
+</svg>
