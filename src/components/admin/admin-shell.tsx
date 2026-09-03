@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 const navigation = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/tools/snapshot", label: "Snapshot" },
   { href: "/admin/tools/leads", label: "Leads" },
   { href: "/admin/tools/systems-check", label: "Systems Check" },
 ] as const;

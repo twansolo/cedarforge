@@ -27,6 +27,14 @@ export type AdminTool = {
 
 export const adminTools: AdminTool[] = [
   {
+    slug: "snapshot",
+    name: "Systems Snapshot",
+    description:
+      "Runs the free Systems Snapshot against a domain and writes the brief to send.",
+    category: "Delivery",
+    status: "live",
+  },
+  {
     slug: "leads",
     name: "Leads",
     description:
