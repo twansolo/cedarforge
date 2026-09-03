@@ -1,4 +1,4 @@
-import { ContactForm } from "@/components/sections/contact-form";
+import { Contact } from "@/components/sections/contact";
 import { Hero } from "@/components/sections/hero";
 import { LocalRoots } from "@/components/sections/local-roots";
 import { Outcomes } from "@/components/sections/outcomes";
@@ -20,7 +20,7 @@ export default function HomePage() {
       <Outcomes />
       <Process />
       <LocalRoots />
-      <ContactForm />
+      <Contact />
     </>
   );
 }

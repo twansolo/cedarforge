@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import { BrandLockup } from "@/components/layout/brand-lockup";
 import { navigation, siteConfig } from "@/lib/site";
 
-export function Footer() {
+export async function Footer() {
   const year = new Date().getFullYear();
 
   return (
@@ -15,12 +15,10 @@ export function Footer() {
              * The supplied dark horizontal lockup. Its artboard is Forge Black,
              * so it sits flush on this surface.
              */}
-            <Image
-              src="/Cedar-Forge-Logo-Dark.svg"
-              alt={`${siteConfig.name} — ${siteConfig.tagline}`}
-              width={1280}
-              height={320}
-              className="h-16 w-auto sm:h-20"
+            <BrandLockup
+              variant="dark"
+              label={`${siteConfig.name} — ${siteConfig.tagline}`}
+              className="h-16 sm:h-20"
             />
             <p className="label-technical mt-6 text-steel-text">
               {siteConfig.locality}, {siteConfig.regionName}

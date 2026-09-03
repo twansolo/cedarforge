@@ -95,13 +95,31 @@ are unchanged and still drive fills, borders, and large display type.
 Manrope for headlines and body, DM Mono for technical labels and metadata, both
 via `next/font/google` with `display: swap`.
 
-Note that the supplied horizontal logo SVG sets its wordmark in Manrope through
-a `font-family` attribute. An SVG loaded via `next/image` renders in its own
-document and cannot reach the page's webfonts, so it falls back to Arial. The
-header therefore pairs the supplied icon mark with live HTML text for the
-wordmark, which keeps the brand typeface and stays crisp at small sizes. The
-footer uses the full supplied `Cedar-Forge-Logo-Dark.svg` at a size where the
-fallback is not noticeable.
+## Logo usage
+
+Both horizontal lockups set their wordmark with `font-family="Manrope, ..."`
+inside the SVG. Served through `next/image`, an SVG renders in its own document
+with no access to the page's webfonts, so the wordmark silently falls back to
+Arial — roughly 8% wider, with different letterforms.
+
+`BrandLockup` (`src/components/layout/brand-lockup.tsx`) avoids that by reading
+the supplied file and inlining it into the page, where `next/font` has already
+registered Manrope and DM Mono under those exact family names. The wordmark then
+renders in the brand typeface with no edit to the asset. The read resolves at
+build time because every consuming page is statically prerendered; if a route
+using it ever becomes dynamic, move the two SVGs under `src/` so they stay inside
+the bundle.
+
+| Surface                        | Asset                            | Where             |
+| ------------------------------ | -------------------------------- | ----------------- |
+| Forge Black (dark)             | `Cedar-Forge-Logo-Dark.svg`      | Footer            |
+| Workshop White (light)         | `Cedar-Forge-Primary-Logo.svg`   | Contact panel     |
+| Constrained space              | `Cedar-Forge-Icon.svg`           | Header            |
+
+Each lockup has an opaque artboard baked in, Forge Black on the dark file and
+Workshop White on the primary, so both sit flush only on their matching surface.
+The header pairs the icon mark with live HTML text rather than a full lockup,
+which keeps the wordmark crisp and legible down to 375px.
 
 ## Contact form
 
@@ -158,9 +176,6 @@ phone number, founding date, customer counts, awards, reviews, and testimonials.
 The outcome figures in the Outcomes section are labelled in the UI as
 illustrative discovery-stage targets rather than measured results.
 
-There is no primary (light-surface) horizontal logo in the kit. The supplied
-`Cedar-Forge-Logo-Dark.svg` has a baked-in Forge Black artboard, and
-`Cedar-Forge-Logo-Stacked.svg` has a baked-in Workshop White one, so both are
-locked to a background. Header and footer are dark surfaces, so this is not
-currently a constraint. Add `Cedar-Forge-Primary-Logo.svg` to `/public` if a
-light-surface lockup is needed later.
+`Cedar-Forge-Logo-Stacked.svg`, the social avatar, and the PNG variants are in
+`/public` but currently unused. They are kept for social profiles, favicons at
+other sizes, and any future square or centered placement.
