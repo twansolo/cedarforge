@@ -1,47 +1,158 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #0b0e0c;
-  --surface: #f5f8f6;
-  --line: #dde5df;
-  --muted: #56675c;
+/*
+ * Cedar Forge.AI design tokens.
+ * Forge Black and Workshop White carry the foundation. Cedar Green is the
+ * brand accent, Signal Green is reserved for interactive and live states,
+ * and Cedar Heartwood appears only in material details and textures.
+ */
+@theme {
+  --color-forge-black: #0b0e0c;
+  --color-cedar-green: #168447;
+  --color-signal-green: #2bbf69;
+  --color-cedar-heartwood: #a6653a;
+  --color-fresh-cut: #e5d6c3;
+  --color-workshop-white: #f4f5f1;
+  --color-muted-steel: #667068;
+
+  /* Steel tints derived from Forge Black, for hairlines and raised surfaces. */
+  --color-steel-900: #11150f;
+  --color-steel-800: #161b16;
+  --color-steel-700: #1e251f;
+  --color-steel-600: #2a332b;
+
+  /*
+   * Accessibility-corrected derivations of the brand tokens. The brand values
+   * above are unchanged and still drive borders, fills, and large display type.
+   * These two exist because the literal tokens fall just short of WCAG AA on
+   * running text:
+   *
+   *   Muted Steel  #667068 on Forge Black     = 3.77:1  (needs 4.5:1)
+   *   Workshop White on Cedar Green #168447   = 4.33:1  (needs 4.5:1)
+   *
+   * Steel Text lifts Muted Steel 10% toward Workshop White (4.56:1) and Cedar
+   * Ink darkens Cedar Green 3% toward Forge Black (4.56:1 both as text on light
+   * surfaces and as a button fill under Workshop White). Both shifts are
+   * visually indistinguishable from the source tokens.
+   */
+  --color-steel-text: #747d76;
+  --color-cedar-ink: #168045;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, monospace;
+
+  /* Editorial display scale, tuned tight for large confident headlines. */
+  --text-display: clamp(2.5rem, 7vw, 5.25rem);
+  --text-display--line-height: 0.98;
+  --text-display--letter-spacing: -0.035em;
+
+  --text-headline: clamp(2rem, 4.4vw, 3.5rem);
+  --text-headline--line-height: 1.04;
+  --text-headline--letter-spacing: -0.03em;
+
+  --text-subhead: clamp(1.375rem, 2.2vw, 1.875rem);
+  --text-subhead--line-height: 1.18;
+  --text-subhead--letter-spacing: -0.02em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #070a08;
-    --foreground: #e9f2ec;
-    --surface: #0e1310;
-    --line: #1e2922;
-    --muted: #97ad9f;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keeps anchor targets clear of the sticky header. */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-forge-black);
+    color: var(--color-workshop-white);
+    font-family: var(--font-sans);
+    /* 16px floor on body copy, never smaller. */
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: var(--color-signal-green);
+    color: var(--color-forge-black);
+  }
+
+  /* Deliberate, visible focus on every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--color-signal-green);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-line: var(--line);
-  --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Fine architectural grid, used behind dark sections. */
+@utility grid-fine {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-muted-steel) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-muted-steel) 14%, transparent) 1px, transparent 1px);
+  background-size: 88px 88px;
 }
 
-/* Cedar Forge brand palette, taken from the logo kit. */
-@theme {
-  --color-forge-ink: #0b0e0c;
-  --color-forge-green: #168447;
-  --color-forge-mint: #7cffac;
+/* Tighter grid for instrument panels and the growth engine surface. */
+@utility grid-instrument {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-muted-steel) 18%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-muted-steel) 18%, transparent) 1px, transparent 1px);
+  background-size: 26px 26px;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+/* Mono technical label: section numbers, metadata, small caps detail. */
+@utility label-technical {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
-/* Visible keyboard focus everywhere, without ringing on mouse clicks. */
-:focus-visible {
-  outline: 2px solid var(--color-forge-green);
-  outline-offset: 2px;
+@utility text-balance-tight {
+  text-wrap: balance;
+}
+
+/* Slow signal pulse for live status indicators. */
+@keyframes signal-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Energy travelling along a connection path. */
+@keyframes signal-dash {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /*
+   * Strip decorative CSS keyframes. `!important` in an author stylesheet beats
+   * the inline `style="animation: ..."` used for the pulse and signal effects.
+   * Framer Motion is handled separately by MotionProvider.
+   */
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cedar Forge favicon">
-  <rect width="64" height="64" rx="12" fill="#0B0E0C"/>
-  <path d="M54 12H25c-7.2 0-13 5.8-13 13v14c0 7.2 5.8 13 13 13h29v-10H27c-3.3 0-6-2.7-6-6V28c0-3.3 2.7-6 6-6h27z" fill="#F4F5F1"/>
-  <path d="M30 26h8v27h-8zM30 26h25v8H30zM30 38h20v8H30z" fill="#2BBF69"/>
-  <circle cx="52" cy="30" r="1.5" fill="#B5FFCD"/><circle cx="47" cy="42" r="1.5" fill="#B5FFCD"/>
-</svg>
