@@ -5,6 +5,10 @@ import {
   type ContactPayload,
   type ContactResponse,
 } from "@/lib/contact-schema";
+import {
+  isHubSpotFormConfigured,
+  submitToHubSpotForm,
+} from "@/lib/hubspot-forms";
 
 /**
  * Contact intake.
@@ -13,14 +17,20 @@ import {
  * request cannot bypass the browser's checks.
  *
  * ── Where the integration belongs ────────────────────────────────────────────
- * `deliverLead` below is the single seam for delivery. Configure one of these
- * in your Vercel project settings (see .env.example); all are server-only and
- * never reach the client bundle:
+ * `deliverLead` below is the single seam for delivery. Configure these in your
+ * Vercel project settings (see .env.example); all are server-only and never
+ * reach the client bundle:
  *
+ *   HUBSPOT_FORM_GUID
+ *     Creates the contact in HubSpot via the Forms API. Works on the free tier.
  *   RESEND_API_KEY + CONTACT_TO_EMAIL + CONTACT_FROM_EMAIL
  *     Transactional email via Resend.
  *   CONTACT_WEBHOOK_URL
- *     Generic JSON POST for a CRM, HubSpot workflow, Zapier, or Make scenario.
+ *     Generic JSON POST for another CRM, Zapier, or Make scenario.
+ *
+ * HubSpot runs independently of the other two: the CRM should hold every lead
+ * even when an email or webhook is also configured. Resend and the generic
+ * webhook remain mutually exclusive, in that order.
  *
  * With nothing configured the route validates, logs, and returns a safe
  * development response so the form is fully testable before a provider exists.
@@ -51,7 +61,10 @@ function isRateLimited(key: string) {
   return entry.count > RATE_LIMIT_MAX;
 }
 
-async function deliverLead(payload: ContactPayload): Promise<DeliveryResult> {
+async function deliverLead(
+  payload: ContactPayload,
+  hubspotContext: { hutk?: string; pageUri?: string },
+): Promise<DeliveryResult> {
   const resendKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL;
   const fromEmail = process.env.CONTACT_FROM_EMAIL;
@@ -62,11 +75,19 @@ async function deliverLead(payload: ContactPayload): Promise<DeliveryResult> {
     `Email: ${payload.email}`,
     `Company: ${payload.company}`,
     `Website: ${payload.website ?? "—"}`,
-    `Service interest: ${payload.serviceInterest}`,
+    `Solution considered: ${payload.solution}`,
+    `Investment range: ${payload.investmentRange}`,
     "",
-    "Primary challenge:",
+    "Where growth is getting stuck:",
     payload.challenge,
   ].join("\n");
+
+  let delivered = false;
+
+  if (isHubSpotFormConfigured()) {
+    await submitToHubSpotForm(payload, hubspotContext);
+    delivered = true;
+  }
 
   if (resendKey && toEmail && fromEmail) {
     const response = await fetch("https://api.resend.com/emails", {
@@ -103,6 +124,10 @@ async function deliverLead(payload: ContactPayload): Promise<DeliveryResult> {
       throw new Error(`Webhook responded ${response.status}`);
     }
 
+    return { delivered: true };
+  }
+
+  if (delivered) {
     return { delivered: true };
   }
 
@@ -163,7 +188,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { delivered } = await deliverLead(parsed.data);
+    const { delivered } = await deliverLead(parsed.data, {
+      // Set by the HubSpot tracking script; links the lead to its first visit.
+      hutk: request.cookies.get("hubspotutk")?.value,
+      pageUri: request.headers.get("referer") ?? undefined,
+    });
 
     return Response.json(
       {

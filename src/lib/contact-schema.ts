@@ -1,8 +1,13 @@
 import { z } from "zod";
 
-import { serviceInterests } from "@/lib/site";
+import { investmentOptions, solutionOptions } from "@/lib/site";
 
-const serviceValues = serviceInterests.map((option) => option.value) as [
+const solutionValues = solutionOptions.map((option) => option.value) as [
+  string,
+  ...string[],
+];
+
+const investmentValues = investmentOptions.map((option) => option.value) as [
   string,
   ...string[],
 ];
@@ -10,6 +15,9 @@ const serviceValues = serviceInterests.map((option) => option.value) as [
 /**
  * Single source of truth for contact validation. Imported by the client form
  * and by the route handler so the browser and server enforce the same rules.
+ *
+ * `investmentRange` is required for routing, but no value is ever treated as
+ * disqualifying: every option is accepted and every submission is delivered.
  */
 export const contactSchema = z.object({
   name: z
@@ -29,17 +37,26 @@ export const contactSchema = z.object({
     .min(2, "Please enter your company.")
     .max(120, "That company name is longer than we can store."),
   website: z
-    .union([z.literal(""), z.string().trim().pipe(z.url("Include the full URL, starting with https://"))])
+    .union([
+      z.literal(""),
+      z
+        .string()
+        .trim()
+        .pipe(z.url("Include the full URL, starting with https://")),
+    ])
     .optional()
     .transform((value) => (value ? value : undefined)),
+  solution: z.enum(solutionValues, {
+    message: "Please choose the solution you are considering.",
+  }),
+  investmentRange: z.enum(investmentValues, {
+    message: "Please choose an approximate range.",
+  }),
   challenge: z
     .string()
     .trim()
     .min(20, "A sentence or two helps us prepare. Please add a little more.")
     .max(2000, "Please keep this under 2000 characters."),
-  serviceInterest: z.enum(serviceValues, {
-    message: "Please choose the area you are most interested in.",
-  }),
 });
 
 export type ContactInput = z.input<typeof contactSchema>;

@@ -49,7 +49,7 @@ export function LocalRoots() {
           {/* Copy */}
           <div className="bg-forge-black p-8 sm:p-10 lg:p-12">
             <Reveal>
-              <TechnicalLabel index="04">Why Cedar Forge</TechnicalLabel>
+              <TechnicalLabel index="07">Why Cedar Forge</TechnicalLabel>
               <h2
                 id="local-roots-heading"
                 className="mt-6 text-headline font-extrabold text-balance-tight text-workshop-white"

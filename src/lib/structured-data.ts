@@ -1,12 +1,23 @@
-import { services, siteConfig } from "@/lib/site";
+import { allOffers, siteConfig } from "@/lib/site";
 
 /**
- * JSON-LD graph. Deliberately omits address, phone, founding date, reviews,
- * and headcount: none of that has been supplied, and inventing it would be
- * both wrong and an SEO liability.
+ * JSON-LD graph.
+ *
+ * Deliberately omits address detail beyond city/region, phone, founding date,
+ * headcount, reviews, ratings, and awards: none of that has been supplied.
+ *
+ * Prices are also omitted. The figures on the page are "starting at" values and
+ * ranges whose final number depends on scope, so publishing them as machine
+ * readable `Offer` prices would assert a precision the site explicitly does not
+ * claim, and would risk a rich-result mismatch. Service names, descriptions, and
+ * capability lists are all drawn from copy that appears on the page.
  */
 export function buildStructuredData() {
   const organizationId = `${siteConfig.url}/#organization`;
+  const areaServed = {
+    "@type": "AdministrativeArea",
+    name: `${siteConfig.locality}, ${siteConfig.regionName}`,
+  };
 
   return {
     "@context": "https://schema.org",
@@ -26,6 +37,13 @@ export function buildStructuredData() {
           height: 512,
         },
         image: `${siteConfig.url}${siteConfig.socialCard}`,
+        knowsAbout: [
+          "AI workflow automation",
+          "Business process automation",
+          "Conversion-focused web design",
+          "Local SEO",
+          "Growth systems for service businesses",
+        ],
       },
       {
         "@type": "LocalBusiness",
@@ -41,10 +59,7 @@ export function buildStructuredData() {
           addressRegion: siteConfig.region,
           addressCountry: siteConfig.country,
         },
-        areaServed: {
-          "@type": "AdministrativeArea",
-          name: `${siteConfig.locality}, ${siteConfig.regionName}`,
-        },
+        areaServed,
       },
       {
         "@type": "WebSite",
@@ -55,23 +70,20 @@ export function buildStructuredData() {
         publisher: { "@id": organizationId },
         inLanguage: "en-US",
       },
-      ...services.map((service) => ({
+      ...allOffers.map((offer) => ({
         "@type": "Service",
-        "@id": `${siteConfig.url}/#service-${service.id}`,
-        name: service.name,
-        description: service.summary,
-        serviceType: service.name,
+        "@id": `${siteConfig.url}/#service-${offer.id}`,
+        name: offer.name,
+        description: offer.description,
+        serviceType: offer.name,
         provider: { "@id": organizationId },
-        areaServed: {
-          "@type": "AdministrativeArea",
-          name: `${siteConfig.locality}, ${siteConfig.regionName}`,
-        },
+        areaServed,
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: `${service.name} capabilities`,
-          itemListElement: service.capabilities.map((capability) => ({
+          name: `${offer.name} scope`,
+          itemListElement: offer.includes.map((item) => ({
             "@type": "Offer",
-            itemOffered: { "@type": "Service", name: capability },
+            itemOffered: { "@type": "Service", name: item },
           })),
         },
       })),

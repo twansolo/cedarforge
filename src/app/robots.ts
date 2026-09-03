@@ -8,7 +8,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: "/api/",
+        // The admin area also sends X-Robots-Tag: noindex from src/proxy.ts,
+        // since robots.txt is a request not to crawl, not an access control.
+        disallow: ["/api/", "/admin", "/admin/"],
       },
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,

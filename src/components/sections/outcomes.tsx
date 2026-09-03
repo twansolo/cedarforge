@@ -16,7 +16,7 @@ export function Outcomes() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
           <Reveal>
             <div>
-              <TechnicalLabel index="02">Outcomes</TechnicalLabel>
+              <TechnicalLabel index="05">Outcomes</TechnicalLabel>
               <h2
                 id="outcomes-heading"
                 className="mt-6 text-headline font-extrabold text-balance-tight text-workshop-white"

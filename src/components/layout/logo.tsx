@@ -35,7 +35,7 @@ export function Logo({
           CEDAR FORGE<span className="text-signal-green">.AI</span>
         </span>
         {showTagline ? (
-          <span className="label-technical mt-1.5 hidden text-[0.5625rem] text-steel-text lg:block">
+          <span className="label-technical mt-1.5 hidden text-[0.5625rem] text-steel-text xl:block">
             Intelligent Growth Systems
           </span>
         ) : null}

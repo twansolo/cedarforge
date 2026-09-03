@@ -29,7 +29,7 @@ export async function Footer() {
             <p className="label-technical text-steel-text">Navigate</p>
             <ul className="mt-5 flex flex-col gap-3">
               {navigation.map((item) => (
-                <li key={item.id}>
+                <li key={item.label}>
                   <Link
                     href={item.href}
                     className="text-[0.9375rem] font-medium text-workshop-white transition-colors hover:text-signal-green"

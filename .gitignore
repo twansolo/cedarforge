@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# playwright-mcp scratch output (snapshots and screenshots from browser tooling)
+.playwright-mcp/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

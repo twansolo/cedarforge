@@ -18,7 +18,7 @@ export function Contact() {
       <div className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
-            <TechnicalLabel index="05" tone="light">
+            <TechnicalLabel index="08" tone="light">
               Start here
             </TechnicalLabel>
             <h2

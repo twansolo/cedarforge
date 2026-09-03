@@ -12,7 +12,7 @@ import {
   type ContactInput,
   type ContactResponse,
 } from "@/lib/contact-schema";
-import { serviceInterests } from "@/lib/site";
+import { investmentOptions, solutionOptions } from "@/lib/site";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -35,7 +35,8 @@ export function ContactForm() {
       company: "",
       website: "",
       challenge: "",
-      serviceInterest: undefined,
+      solution: undefined,
+      investmentRange: undefined,
     },
   });
 
@@ -92,11 +93,12 @@ export function ContactForm() {
           <Check aria-hidden="true" className="size-5" />
         </span>
         <div>
-          <p className="text-2xl font-bold tracking-tight">Request received.</p>
+          <p className="text-2xl font-bold tracking-tight">
+            Your request is in.
+          </p>
           <p className="mt-3 max-w-md leading-relaxed text-forge-black/70">
-            Thanks for the detail. We&rsquo;ll review how your business runs
-            today and follow up from a Cedar Forge address with questions and a
-            suggested first move.
+            We&rsquo;ll review the opportunity and respond personally within one
+            business day.
           </p>
         </div>
         <Button variant="ghost" onClick={() => setStatus("idle")} size="sm">
@@ -185,27 +187,55 @@ export function ContactForm() {
         </Field>
 
         <Field
-          id="serviceInterest"
-          label="Service interest"
-          error={errors.serviceInterest?.message}
-          className="sm:col-span-2"
+          id="solution"
+          label="Which solution are you considering?"
+          error={errors.solution?.message}
         >
           <select
-            {...register("serviceInterest")}
-            id="serviceInterest"
+            {...register("solution")}
+            id="solution"
             defaultValue=""
-            aria-invalid={Boolean(errors.serviceInterest)}
+            aria-invalid={Boolean(errors.solution)}
             aria-describedby={describedBy(
-              "serviceInterest",
-              Boolean(errors.serviceInterest),
+              "solution",
+              Boolean(errors.solution),
               false,
             )}
-            className={controlClasses(Boolean(errors.serviceInterest))}
+            className={controlClasses(Boolean(errors.solution))}
           >
             <option value="" disabled>
-              Select an area
+              Select a solution
             </option>
-            {serviceInterests.map((option) => (
+            {solutionOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field
+          id="investmentRange"
+          label="Approximate investment range"
+          hint="Used to prepare, never to disqualify."
+          error={errors.investmentRange?.message}
+        >
+          <select
+            {...register("investmentRange")}
+            id="investmentRange"
+            defaultValue=""
+            aria-invalid={Boolean(errors.investmentRange)}
+            aria-describedby={describedBy(
+              "investmentRange",
+              Boolean(errors.investmentRange),
+              true,
+            )}
+            className={controlClasses(Boolean(errors.investmentRange))}
+          >
+            <option value="" disabled>
+              Select a range
+            </option>
+            {investmentOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -215,7 +245,7 @@ export function ContactForm() {
 
         <Field
           id="challenge"
-          label="Primary challenge"
+          label="Where is growth getting stuck?"
           hint="What feels stuck right now? A sentence or two is plenty."
           error={errors.challenge?.message}
           className="sm:col-span-2"
@@ -249,7 +279,7 @@ export function ContactForm() {
             </>
           ) : (
             <>
-              Build My Growth Map
+              Request My Growth Map
               <ArrowRight
                 aria-hidden="true"
                 className="size-4 transition-transform duration-200 group-hover:translate-x-1"

@@ -11,7 +11,14 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { navigation, primaryCta } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-const sectionIds = navigation.map((item) => item.id);
+/**
+ * Only entries that own a section participate in scroll tracking. "Solutions"
+ * shares the Pricing anchor and deliberately has no activeId, so a single item
+ * highlights at a time.
+ */
+const sectionIds: readonly string[] = navigation.flatMap((item) =>
+  "activeId" in item ? [item.activeId] : [],
+);
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -91,17 +98,19 @@ export function Header() {
         </Link>
 
         {/* Desktop navigation */}
-        <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+        <nav aria-label="Main" className="hidden xl:block">
+          <ul className="flex items-center">
             {navigation.map((item) => {
-              const isActive = activeId === item.id;
+              const itemActiveId = "activeId" in item ? item.activeId : undefined;
+              const isActive = Boolean(itemActiveId) && activeId === itemActiveId;
+
               return (
-                <li key={item.id}>
+                <li key={item.label}>
                   <Link
                     href={item.href}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "relative px-4 py-2.5 text-sm font-medium transition-colors duration-200",
+                      "relative px-3 py-2.5 text-[0.875rem] font-medium transition-colors duration-200",
                       isActive
                         ? "text-workshop-white"
                         : "text-steel-text hover:text-workshop-white",
@@ -111,7 +120,7 @@ export function Header() {
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "absolute inset-x-4 -bottom-px h-px origin-left bg-signal-green transition-transform duration-300",
+                        "absolute inset-x-3 -bottom-px h-px origin-left bg-signal-green transition-transform duration-300",
                         isActive ? "scale-x-100" : "scale-x-0",
                       )}
                     />
@@ -138,7 +147,7 @@ export function Header() {
             aria-expanded={menuOpen}
             aria-controls={panelId}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="inline-flex size-10 items-center justify-center border border-muted-steel/35 text-workshop-white transition-colors hover:border-signal-green hover:text-signal-green lg:hidden"
+            className="inline-flex size-10 items-center justify-center border border-muted-steel/35 text-workshop-white transition-colors hover:border-signal-green hover:text-signal-green xl:hidden"
           >
             {menuOpen ? (
               <X aria-hidden="true" className="size-5" />
@@ -163,19 +172,23 @@ export function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="border-t border-muted-steel/25 bg-forge-black lg:hidden"
+            className="border-t border-muted-steel/25 bg-forge-black xl:hidden"
           >
             <nav aria-label="Mobile" className="px-5 pb-8 pt-4 sm:px-8">
               <ul className="flex flex-col">
                 {navigation.map((item) => (
-                  <li key={item.id} className="border-b border-muted-steel/15">
+                  <li key={item.label} className="border-b border-muted-steel/15">
                     <Link
                       href={item.href}
                       onClick={closeMenu}
-                      aria-current={activeId === item.id ? "true" : undefined}
+                      aria-current={
+                        "activeId" in item && activeId === item.activeId
+                          ? "true"
+                          : undefined
+                      }
                       className={cn(
                         "flex items-center justify-between py-4 text-lg font-semibold tracking-tight transition-colors",
-                        activeId === item.id
+                        "activeId" in item && activeId === item.activeId
                           ? "text-signal-green"
                           : "text-workshop-white hover:text-signal-green",
                       )}

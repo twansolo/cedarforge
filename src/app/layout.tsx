@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Mono, Manrope } from "next/font/google";
 
-import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
 import { MotionProvider } from "@/components/motion-provider";
 import { siteConfig } from "@/lib/site";
-import { buildStructuredData } from "@/lib/structured-data";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -65,6 +62,19 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  /*
+   * Descriptive terms only, matching services the site actually describes.
+   * Modern engines ignore this tag; it is here for internal clarity on the
+   * positioning rather than for ranking.
+   */
+  keywords: [
+    "growth systems for service businesses",
+    "AI automation Cedar Rapids",
+    "AI workflow consulting",
+    "business process automation",
+    "Cedar Rapids web design",
+    "local SEO for Iowa businesses",
+  ],
   category: "technology",
 };
 
@@ -77,26 +87,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${manrope.variable} ${dmMono.variable}`}>
       <body className="antialiased">
-        <a
-          href="#hero"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:border focus:border-signal-green focus:bg-forge-black focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-workshop-white"
-        >
-          Skip to content
-        </a>
-
-        <MotionProvider>
-          <Header />
-          {children}
-          <Footer />
-        </MotionProvider>
-
-        <script
-          type="application/ld+json"
-          // Server-rendered from typed data in src/lib/structured-data.ts.
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildStructuredData()),
-          }}
-        />
+        {/*
+         * Shell only. Site chrome lives in (marketing)/layout.tsx so the admin
+         * area can render without the marketing header and footer. Motion
+         * policy stays here because it is a global accessibility concern.
+         */}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

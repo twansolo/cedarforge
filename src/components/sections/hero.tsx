@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 import { GrowthSystem } from "@/components/sections/growth-system";
 import { ButtonLink } from "@/components/ui/button";
+import { heroPriceNote } from "@/lib/site";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -68,20 +69,28 @@ export function Hero() {
               business actually runs.
             </motion.p>
 
-            <motion.div
-              {...step(0.3)}
-              className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
-            >
-              <ButtonLink href="#contact" className="group">
-                Build My Growth Map
-                <ArrowRight
+            <motion.div {...step(0.3)} className="mt-9">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <ButtonLink href="#contact" className="group">
+                  Start With a Growth Map
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="size-4 transition-transform duration-200 group-hover:translate-x-1"
+                  />
+                </ButtonLink>
+                <ButtonLink href="#what-we-build" variant="secondary">
+                  Explore the System
+                </ButtonLink>
+              </div>
+
+              {/* Qualifying line: sets the entry point without leading on price. */}
+              <p className="mt-5 flex items-center gap-2.5 text-base text-steel-text">
+                <span
                   aria-hidden="true"
-                  className="size-4 transition-transform duration-200 group-hover:translate-x-1"
+                  className="h-px w-4 shrink-0 bg-muted-steel/60"
                 />
-              </ButtonLink>
-              <ButtonLink href="#what-we-build" variant="secondary">
-                Explore the System
-              </ButtonLink>
+                {heroPriceNote}
+              </p>
             </motion.div>
           </div>
 

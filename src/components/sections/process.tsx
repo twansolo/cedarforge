@@ -17,7 +17,7 @@ export function Process() {
     >
       <div className="mx-auto max-w-[1400px] px-5 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32">
         <div className="max-w-3xl">
-          <TechnicalLabel index="03" tone="light">
+          <TechnicalLabel index="06" tone="light">
             How it works
           </TechnicalLabel>
           <h2

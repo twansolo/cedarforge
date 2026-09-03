@@ -41,10 +41,13 @@ src/
 │   ├── sitemap.ts            Generated sitemap.xml
 │   └── api/contact/route.ts  Contact intake, server-side validation
 ├── components/
-│   ├── layout/               Header, Footer, Logo
-│   ├── sections/             Hero, GrowthSystem, ProblemStrip, Services,
-│   │                         Outcomes, Process, LocalRoots, ContactForm
-│   ├── ui/                   Button, Field, TechnicalLabel, Reveal, WoodGrain
+│   ├── layout/               Header, Footer, Logo, BrandLockup
+│   ├── sections/             Hero, GrowthSystem, ProblemStrip, OfferSystem,
+│   │                         Pricing, FlagshipDiagram, SystemsCare,
+│   │                         Qualification, Outcomes, Process, LocalRoots,
+│   │                         Contact, ContactForm
+│   ├── ui/                   Button, Field, PriceBlock, IncludeList,
+│   │                         TechnicalLabel, Reveal, WoodGrain
 │   └── motion-provider.tsx   Global reduced-motion policy
 ├── hooks/
 │   └── use-active-section.ts Nav position tracking
@@ -55,10 +58,10 @@ src/
     └── utils.ts
 ```
 
-Content lives in `src/lib/site.ts`, not inside components. Editing services,
-process stages, outcomes, or nav items is a change to that one file. This is
-also the seam to swap in a CMS later: replace the exports with async data
-fetches and the sections keep working.
+Content lives in `src/lib/site.ts`, not inside components. Editing offers,
+prices, care tiers, qualification criteria, process stages, or nav items is a
+change to that one file. This is also the seam to swap in a CMS later: replace
+the exports with async data fetches and the sections keep working.
 
 ### Adding routes
 
@@ -67,6 +70,41 @@ is a move rather than a rewrite. Case studies, articles, a client portal, and
 per-service pages can be added as new folders under `src/app/` while the home
 page keeps its anchors. Update `navigation` in `src/lib/site.ts` and
 `src/app/sitemap.ts` when routes are added.
+
+## Offers and pricing
+
+The offer hierarchy is data in `src/lib/site.ts`:
+
+| Export           | Offer                                                    |
+| ---------------- | -------------------------------------------------------- |
+| `entryOffer`     | Growth Systems Map, the paid entry point                  |
+| `focusedOffers`  | Website Growth System, AI Workflow Sprint, Local Demand Engine |
+| `flagshipOffer`  | Cedar Forge Growth Engine                                 |
+| `careTiers`      | Systems Care: Essential, Managed, Optimization            |
+| `allOffers`      | Flat list, consumed by the JSON-LD builder                |
+
+Every offer carries a `priceKind` of `one-time`, `monthly`, or
+`implementation-plus-monthly`. `PriceBlock` renders that as an explicit cadence
+label above the figure, so a one-time implementation can never be read as a
+monthly retainer. Offers with both costs show them on separate lines.
+
+Price strings are stored and rendered verbatim, including "Starting at" and
+ranges. There is no discount, crossed-out, or urgency presentation anywhere, and
+qualification notes (the Growth Systems Map credit, third-party usage costs, the
+Local Demand Engine onboarding fee, the Systems Care eligibility rule) render as
+visible body copy rather than tooltips.
+
+### Structured data
+
+`src/lib/structured-data.ts` emits one `Service` node per offer, using the same
+names, descriptions, and scope lists that appear on the page.
+
+Prices are deliberately **not** in the JSON-LD. The published figures are
+"starting at" values and ranges whose final number depends on scope, so encoding
+them as machine-readable `Offer` prices would assert a precision the page
+explicitly disclaims and risks a rich-result mismatch. Ratings, reviews,
+availability, phone, street address, founding date, and headcount are likewise
+absent because none were supplied.
 
 ## Design tokens
 
@@ -122,6 +160,12 @@ The header pairs the icon mark with live HTML text rather than a full lockup,
 which keeps the wordmark crisp and legible down to 375px.
 
 ## Contact form
+
+The form qualifies the lead: alongside name, work email, company, and optional
+website, it captures which solution the visitor is considering and an approximate
+investment range. The range is used only to prepare for the conversation. No
+value is treated as disqualifying, and the route handler accepts and delivers
+every range.
 
 Validation runs through one Zod schema (`src/lib/contact-schema.ts`) on both the
 client and the server, so a crafted request cannot bypass the browser's checks.
